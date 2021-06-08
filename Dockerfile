@@ -1,5 +1,5 @@
 # stage1 as builder
-FROM node:10-alpine as builder
+FROM node:10-alpine
 
 WORKDIR /app
 
@@ -18,13 +18,13 @@ RUN npm run build
 FROM nginx:alpine
 
 #!/bin/sh
-COPY --from=builder /app/.nginx/nginx.conf /etc/nginx/nginx.conf
+COPY --from=0 /app/.nginx/nginx.conf /etc/nginx/nginx.conf
 
 ## Remove default nginx index page
 RUN rm -rf /usr/share/nginx/html/*
 
 # Copy from the stahg 1
-COPY --from=builder /app/out /usr/share/nginx/html
+COPY --from=0 /app/out /usr/share/nginx/html
 
 EXPOSE 3000 80
 
