@@ -18,8 +18,7 @@ RUN npm run build
 FROM nginx:alpine
 
 #!/bin/sh
-
-COPY /app/.nginx/nginx.conf /etc/nginx/nginx.conf
+COPY --from=builder /app/.nginx/nginx.conf /etc/nginx/nginx.conf
 
 ## Remove default nginx index page
 RUN rm -rf /usr/share/nginx/html/*
